@@ -1,20 +1,39 @@
-// Algorithms.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+void sort(int[], size_t, size_t);
+void swap(int[], size_t, size_t);
+
+int main() {
+    int nums[]{ 3, 0, 6, -2, -6, 11, 3 };
+    sort(nums, 0, std::size(nums) - 1);
+    for (auto num : nums) {
+        std::cout << num << "\t";
+    }
+    std::cout << std::endl;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+void sort(int numbers[], size_t start, size_t end) {
+    // начальный индекс должен быть меньше конечного индекса для массива из 2 и более элементов
+    if (start >= end)
+        return;
+    // проверяем все элементы относительно элемента с индексом start
+    size_t current{ start };
+    for (size_t i{ start + 1 }; i <= end; i++) {
+        // если i-ый элемент меньше начального
+        if (numbers[i] < numbers[start]) {
+            swap(numbers, ++current, i); // меняем его с левым
+        }
+    }
+    swap(numbers, start, current); // Меняем выбранный (start) и последний обмененный элементы
+    if (current > start) {
+        sort(numbers, start, current - 1); // Сортируем элементы слева
+    }
+    if (end > current + 1) {
+        sort(numbers, current + 1, end); // Сортируем элементы справа
+    }
+}
+void swap(int numbers[], size_t first, size_t second) {
+    auto temp{ numbers[first] };
+    numbers[first] = numbers[second];
+    numbers[second] = temp;
+}
